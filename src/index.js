@@ -1,4 +1,9 @@
 const generateTranscript = require('./services/transcript');
+const summarizeTranscript = require('./services/analyze');
 
-generateTranscript();
+async function main() {
+    const fileName = await generateTranscript();
+    summarizeTranscript(fileName);
+}
 
+main();
