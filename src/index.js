@@ -2,7 +2,7 @@ const generateTranscript = require('./services/transcript');
 const summarizeTranscript = require('./services/analyze');
 const answerQuestion = require('./services/answer');
 
-const connectDB = require('./database/index');
+const connectDB = require('./database/connection');
 
 /* The idea of using Object.freeze was taken from chatGPT | AI Generated code */
 const Commands = Object.freeze({
