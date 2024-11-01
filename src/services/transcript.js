@@ -8,14 +8,13 @@ const openai = new OpenAI({
 });
 
 async function generateTranscript() {
+  const prompt = "Generate a realistic sales call transcript between a salesperson and a client discussing a tech product. Include timestamps & names along with each statement";
   try {
-    const prompt = "Generate a realistic sales call transcript between a salesperson and a client discussing a tech product. Include timestamps & names along with each statement";
-
     /* Syntax reference: https://platform.openai.com/docs/api-reference/chat?lang=node.js */
     const response = await openai.chat.completions.create({
         messages: [{ role: "user", content: prompt }],
         model: "gpt-3.5-turbo",
-        max_tokens: 50,
+        max_tokens: 50, // TODO: To be tweaked later
         temperature: 0.7
     });
     /* Syntax reference ENDS */
@@ -25,11 +24,14 @@ async function generateTranscript() {
     console.log('Transcript generated:');
     console.log(transcriptContent);
 
+    // Saving transcript to the file
     const fileName = `transcript_${response.created}.txt`;
     const filePath = path.join(__dirname, `../../${fileName}`);
     fs.writeFileSync(filePath, transcriptContent);
 
     console.log(`Transcript saved to ${filePath}`);
+    
+    return fileName;
   } catch (error) {
     console.error('Error generating transcript:', error);
   }
