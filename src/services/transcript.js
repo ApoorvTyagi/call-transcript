@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
+const TranscriptModel = require('../models/transcript');
+
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -12,7 +14,7 @@ async function generateTranscript() {
   try {
     /* Syntax reference: https://platform.openai.com/docs/api-reference/chat?lang=node.js */
     const response = await openai.chat.completions.create({
-        messages: [{ role: "user", content: prompt }],
+        messages: [{ role: "system", content: prompt }],
         model: "gpt-3.5-turbo",
         max_tokens: 50, // TODO: To be tweaked later
         temperature: 0.7
@@ -30,6 +32,10 @@ async function generateTranscript() {
     fs.writeFileSync(filePath, transcriptContent);
 
     console.log(`Transcript saved to ${filePath}`);
+
+    // Save transcript to DB
+    const newTranscript = new TranscriptModel({ content: transcriptContent, fileName });
+    await newTranscript.save();
     
     return fileName;
   } catch (error) {
