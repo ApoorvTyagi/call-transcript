@@ -7,11 +7,12 @@ This application generates, summarizes, and answers questions based on sales cal
 The app is structured into separate modules following software engineering principles, making it modular, scalable, and easy to maintain.
 
 ## Features
-- Generate Transcript: Creates a realistic sales call transcript and saves it to MongoDB and as a text file.
-- Summarize Transcript: Extracts key points from the saved transcript file.
-- Answer Question: Answers questions based on the transcript content.
+- *Generate Transcript*: Creates a realistic sales call transcript and saves it to MongoDB and as a text file.
+- *Summarize Transcript*: Extracts key points from the saved transcript file.
+- *Answer Question*: Answers questions based on the transcript content.
 
 ## Folder Structure
+```
 src
 ├── config
 │   └── config.js           # Environment configuration file
@@ -29,6 +30,7 @@ src
 tests
 └── test.js                 # Test file
 .env                        # Environment variables file
+```
 
 ## Setup Instructions
 1. Clone the repository
@@ -69,12 +71,12 @@ node src/index.js generate
 ```
 node src/index.js summarize <fileName>
 ```
-- <fileName>: The name of the transcript file you want to summarize. The fileName is also returned by `generateTranscript()` called in previous step
+- `<fileName>`: The name of the transcript file you want to summarize. The fileName is also returned by `generateTranscript()` called in previous step
 
 3. Answer Questions
 ```
 node src/index.js answer <fileName> <question>
 ```
 
-- <fileName>: The name of the transcript file you want to query.
-- <question>: The question you want to ask based on the transcript content.
+- `<fileName>`: The name of the transcript file you want to query.
+- `<question>`: The question you want to ask based on the transcript content.
