@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const chai = require('chai');
+const expect = chai.expect;
+/* AI generated imports */
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const expect = chai.expect;
 chai.use(sinonChai);
+/* AI generated code ENDS */
 
 const TranscriptModel = require('../src/models/transcript');
 
