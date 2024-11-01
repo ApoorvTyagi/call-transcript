@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
+const TranscriptModel = require('../models/transcript');
+
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -26,8 +28,32 @@ async function answerQuestion(fileName, question) {
     /* Syntax reference ENDS */
 
     const answer = response.choices[0].message.content;
-
+    
     console.log(`Answer: ${answer}`);
+
+    // Saving chat history
+    const newChat = { question, answer };
+    await updateChatHistoryByFileName(fileName, newChat);
+}
+
+async function updateChatHistoryByFileName(fileName, newChat) {
+  try {
+      const updatedTranscript = await TranscriptModel.findOneAndUpdate(
+          { fileName },
+          { $push: { chatHistory: newChat } },
+          { new: true }
+      );
+
+      if (!updatedTranscript) {
+          console.log(`Transcript with fileName "${fileName}" not found.`);
+          return null;
+      }
+
+      console.log(`Transcript updated successfully.`);
+      return updatedTranscript;
+  } catch (error) {
+      console.error(`Error updating chat history: ${error.message}`);
+  }
 }
 
 module.exports = answerQuestion;

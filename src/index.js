@@ -1,6 +1,8 @@
 const generateTranscript = require('./services/transcript');
 const summarizeTranscript = require('./services/analyze');
-const answerQuestion = require('./services/question');
+const answerQuestion = require('./services/answer');
+
+const connectDB = require('./database/index');
 
 /* The idea of using Object.freeze was taken from chatGPT | AI Generated code */
 const Commands = Object.freeze({
@@ -11,6 +13,8 @@ const Commands = Object.freeze({
 /* AI Generated code ENDS*/
 
 async function main() {
+    await connectDB();
+
     const [,, command, fileName, question] = process.argv;
 
     switch(command) {
@@ -26,6 +30,7 @@ async function main() {
         default:
             console.log('Unknown command');
     }
+    process.exit();
 }
 
 main();
