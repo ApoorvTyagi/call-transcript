@@ -17,6 +17,7 @@ const answerQuestion = require('../src/services/answer');
 let mongoServer;
 
 describe('Transcript Service Tests', function () {
+    /* AI Generated */
     this.timeout(10_000);
 
     before(async () => {
@@ -29,6 +30,7 @@ describe('Transcript Service Tests', function () {
         await mongoose.disconnect();
         await mongoServer.stop();
     });
+    /* AI Generated code ENDS */
 
     describe('Generate Transcript', () => {
         it('should generate a transcript and save it to the database', async () => {
