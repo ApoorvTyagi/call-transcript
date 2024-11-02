@@ -7,8 +7,8 @@ This application generates, summarizes, and answers questions based on sales cal
 The app is structured into separate modules following software engineering principles, making it modular, scalable, and easy to maintain.
 
 ## Features
-- *Generate Transcript*: Creates a realistic sales call transcript and saves it to MongoDB and as a text file.
-- *Summarize Transcript*: Extracts key points from the saved transcript file.
+- *Generate Transcript*: Creates a realistic sales call transcript and saves it to MongoDB and as a text file to the root directory.
+- *Summarize Transcript*: Summarizes & extracts key points from the saved transcript file.
 - *Answer Question*: Answers questions based on the transcript content.
 
 ## Folder Structure
@@ -33,50 +33,85 @@ tests
 ```
 
 ## Setup Instructions
-1. Clone the repository
+1. **Clone the Repository**
 ```
 git clone <repository-url>
 cd call-Transcript
 ```
 
-2. Install dependencies
+2. **Install Dependencies**
 ```
 npm i
 ```
 
-3. Set Up Environment Variables
-
-- Create a .env file in the root directory and add the following variables:
+3. **Set Up Environment Variables**
 ```
 MONGODB_URI=<Your MongoDB connection string>
 OPENAI_API_KEY=<Your OpenAI API key>
 ```
+Create a `.env` file in the root directory and add the above variables in it.
 
-4. Start MongoDB
-- Make sure MongoDB is running. This can be locally or via a cloud provider like MongoDB Atlas.
+4. **Start MongoDB**
 
-5. Run the Application 
-- Use the commands below to generate, summarize, or answer questions about a transcript.
+Make sure MongoDB is running. This can be locally or via a cloud provider like MongoDB Atlas.
+
+5. **Run the Application**
+
+Use the commands below to generate, summarize, or answer questions about a transcript.
 
 ## Usage Guide
 Run the application with the following commands:
 
-1. Generate Transcript
+1. **Generate Transcript**
 ```
 node src/index.js generate
 ```
-- This command generates a transcript and saves it as a file and in the database.
+This command generates a transcript and saves it as a file and in the database.
 
-2. Summarize Transcript
+2. **Summarize Transcript**
 ```
 node src/index.js summarize <fileName>
 ```
-- `<fileName>`: The name of the transcript file you want to summarize. The fileName is also returned by `generateTranscript()` called in previous step
+- `<fileName>`: The name of the transcript file you want to summarize. The fileName is also returned by `generateTranscript()` called in previous step.
 
-3. Answer Questions
+This will extract all the key points from the given transcript.
+
+3. **Answer Questions**
 ```
 node src/index.js answer <fileName> <question>
 ```
 
 - `<fileName>`: The name of the transcript file you want to query.
 - `<question>`: The question you want to ask based on the transcript content.
+
+This will return an answer for the given question.
+
+
+## Thought Process and Improvements
+
+- **Problem Breakdown**: Divided the project into four main phases for ease of development:
+    - **Transcript Service** - Responsible for generating transcripts and saving them to a text file. ([PR #1](https://github.com/ApoorvTyagi/call-transcript/pull/1))
+    - **Analyze Service** - Summarizes the transcript content. ([PR #2](https://github.com/ApoorvTyagi/call-transcript/pull/2))
+    - **Answer Service** - Answers questions based on the transcript content. ([PR #3](https://github.com/ApoorvTyagi/call-transcript/pull/3))
+    - **Database Layer** - Manages saving transcripts and chat history to a database. ([PR #4](https://github.com/ApoorvTyagi/call-transcript/pull/4))
+
+- **Service Implementation**: Implemented the business logic for each feature within separate files in the `services` folder, ensuring clear separation of responsibilities.
+
+- **OpenAI API Integration**: Utilized OpenAI's official npm library ([openai](https://www.npmjs.com/package/openai)) for API calls, following code examples from their [documentation](https://platform.openai.com/docs/api-reference/chat?lang=node.js). Alternatively, we could have called their APIs directly using `axios`.
+
+- **API Parameters**: After reviewing OpenAI's documentation, configured `max_tokens` and `temperature` parameters to optimize response quality. These values were adjusted based on the specific needs of each feature.
+
+- **Database Choice**: Opted for a NoSQL database (MongoDB) due to the flexibility it provides in schema management. With potential future requirements to add or update keys, NoSQL allows for easier scalability without predefined relations.
+
+- **Transcript Schema**: Defined a `transcript model` in MongoDB with three main fields:
+    - `fileName` (Indexed for efficient search),
+    - `content` (stores transcript content),
+    - `chatHistory` (an array of question-answer pairs).
+
+- **Testing**: Added test cases for all three main services. Console output verification was achieved by spying on `console.log`, this logic is generated by AI. ([PR #5](https://github.com/ApoorvTyagi/call-transcript/pull/5))
+
+- **Code Refactoring** ([PR #6](https://github.com/ApoorvTyagi/call-transcript/pull/6)): Upon confirming functionality, refactored the code to improve structure and modularity:
+    - **Third-party API Calls**: Moved OpenAI-related calls to a dedicated file (`/services/openai.js`).
+    - **Business Logic**: Isolated core business logic within separate files in the `services` folder.
+    - **Database Logic**: Consolidated database interaction functions in `/database/repository.js`.
+    - **Environment Configuration**: Centralized environment variable management in `config.js`. This allows other services to import necessary environment variables directly from `config.js`, ensuring a cleaner setup and easier maintenance.
