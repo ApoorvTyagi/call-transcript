@@ -1,6 +1,11 @@
 const OpenAI = require('openai');
 const { openAiApiKey } = require('../config/config');
 
+if (!openAiApiKey) {
+    console.error('Error: OpenAI API key is missing. Please check your configuration.');
+    process.exit(1);
+}
+
 const openai = new OpenAI({ apiKey: openAiApiKey });
 
 async function generateTranscriptContent() {

@@ -7,11 +7,19 @@ async function saveTranscript(fileName, content) {
 }
 
 async function updateChatHistory(fileName, chatEntry) {
-    return TranscriptModel.findOneAndUpdate(
+    const updatedTranscript = await TranscriptModel.findOneAndUpdate(
         { fileName },
         { $push: { chatHistory: chatEntry } },
         { new: true }
     );
+
+    if (!updatedTranscript) {
+        console.warn(`Transcript with fileName "${fileName}" not found. Chat history was not updated.`);
+    } else {
+        console.log('Chat history updated successfully');
+    }
+
+    return updatedTranscript;
 }
 
 module.exports = {
