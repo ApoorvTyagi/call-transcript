@@ -5,7 +5,7 @@ const answerQuestion = require('./services/answer');
 const connectDB = require('./database/connection');
 
 /* The idea of using Object.freeze was taken from chatGPT | AI Generated code */
-const Commands = Object.freeze({
+const COMMANDS_ENUM = Object.freeze({
     GENERATE: 'generate',
     SUMMARIZE: 'summarize',
     ANSWER: 'answer',
@@ -17,14 +17,19 @@ async function main() {
 
     const [,, command, fileName, question] = process.argv;
 
+    if (!command || !Object.values(COMMANDS_ENUM).includes(command)) {
+        console.log('Error: Unknown or missing command. Please use "generate", "summarize", or "answer".');
+        process.exit(1);
+    }
+
     switch(command) {
-        case Commands.GENERATE:
+        case COMMANDS_ENUM.GENERATE:
             await generateTranscript();
             break;
-        case Commands.SUMMARIZE:
+        case COMMANDS_ENUM.SUMMARIZE:
             await summarizeTranscript(fileName);
             break;
-        case Commands.ANSWER:
+        case COMMANDS_ENUM.ANSWER:
             await answerQuestion(fileName, question);
             break;
         default:
