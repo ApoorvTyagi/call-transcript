@@ -1,19 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-
-const { summarizeTranscriptContent } = require('./openai')
+const { readContentFromFile } = require('../util/fileUtils');
+const { summarizeTranscriptContent } = require('./openai');
 
 async function summarizeTranscript(fileName) {
   try {
-    const filePath = path.join(__dirname, `../../${fileName}`);
-    /* AI generated validation */
-    if (!fs.existsSync(filePath)) {
-      console.error(`File not found: ${filePath}`);
-      return null;
-    }
-    /* AI generated code ENDS */
-
-    const transcriptContent = fs.readFileSync(filePath, 'utf-8');
+    const transcriptContent = readContentFromFile(fileName);
     if (!transcriptContent || typeof transcriptContent !== 'string') {
       console.error('Invalid or empty transcript content.');
       return null;
