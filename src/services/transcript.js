@@ -1,7 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-
 const { generateTranscriptContent } = require('./openai');
+const { saveContentToFile } = require('../util/fileUtils');
 const { saveTranscript } = require('../database/repository');
 
 async function generateTranscript() {
@@ -26,13 +24,6 @@ async function generateTranscript() {
   } catch (error) {
     console.error('Error generating transcript:', error);
   }
-}
-
-function saveContentToFile(fileName, transcriptContent) {
-  const filePath = path.join(__dirname, `../../${fileName}`);
-  fs.writeFileSync(filePath, transcriptContent);
-
-  console.log(`Transcript saved to ${filePath}`);
 }
 
 module.exports = generateTranscript;

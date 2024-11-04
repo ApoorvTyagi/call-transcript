@@ -1,20 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-
+const { readContentFromFile } = require('../util/fileUtils');
 const { answerTranscriptQuestion } = require('./openai');
 const { updateChatHistory } = require('../database/repository');
 
 async function answerQuestion(fileName, question) {
     try {
-        const filePath = path.join(__dirname, `../../${fileName}`);
-        /* AI generated validation */
-        if (!fs.existsSync(filePath)) {
-            console.error(`File not found: ${filePath}`);
-            return null;
-        }
-        /* AI generated code ENDS */
-
-        const transcriptContent = fs.readFileSync(filePath, 'utf-8');
+        const transcriptContent = readContentFromFile(fileName);
         if (!transcriptContent || typeof transcriptContent !== 'string') {
             console.error('Invalid or empty transcript content.');
             return null;
