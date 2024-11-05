@@ -9,14 +9,14 @@ if (!openAiApiKey) {
 const openai = new OpenAI({ apiKey: openAiApiKey });
 
 async function generateTranscriptContent(language) {
-    const prompt = `Generate realistic sales call transcript in ${language} language between salesperson and client discussing tech product. Include timestamps & names along with each statement`;
+    const prompt = `Generate realistic and natural-sounding sales call transcript in ${language} between a salesperson and a client discussing a tech product. Include timestamps and names along with each statement`;
     
     /* Syntax reference: https://platform.openai.com/docs/api-reference/chat?lang=node.js */
     const response = await openai.chat.completions.create({
         messages: [{ role: "system", content: prompt }],
         model: "gpt-3.5-turbo",
         max_tokens: 1000,
-        temperature: 0.8,
+        temperature: 0.2,
     });
     /* Syntax reference ENDS */
     
@@ -27,7 +27,7 @@ async function generateTranscriptContent(language) {
 }
 
 async function summarizeTranscriptContent(transcriptContent, language) {
-    const prompt = `Summarize and return key points in ${language} language from this sales call: ${transcriptContent}`;
+    const prompt = `Summarize key points from this sales call transcript in ${language}. Focus on the main topics discussed, including any action items, decisions, and product details. \n Transcript: "${transcriptContent}" Provide the summary in ${language}, keeping it clear and concise`;
 
     /* Syntax reference: https://platform.openai.com/docs/api-reference/chat?lang=node.js */
     const response = await openai.chat.completions.create({
@@ -42,7 +42,7 @@ async function summarizeTranscriptContent(transcriptContent, language) {
 }
 
 async function answerTranscriptQuestion(content, question, language) {
-    const prompt = `Using this transcript: ${content}, answer: ${question}, in ${language} language`;
+    const prompt = `Based on the following transcript, answer the question in ${language}: \n Transcript: "${content}" \n Question: "${question}" \n Answer the question in ${language}, providing as much relevant detail as possible`;
     
     /* Syntax reference: https://platform.openai.com/docs/api-reference/chat?lang=node.js */
     const response = await openai.chat.completions.create({
