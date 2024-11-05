@@ -60,7 +60,7 @@ describe('Transcript Service Tests', function () {
     /* Below 2 test cases are AI generated */
     describe('Summarize Transcript', () => {
         it('should summarize transcript from file', async () => {
-            const sampleFileName = 'transcript_1730483421.txt';
+            const sampleFileName = 'sample_transcript_1730483421.txt';
 
             await summarizeTranscript(sampleFileName, 'english');
             
@@ -68,7 +68,7 @@ describe('Transcript Service Tests', function () {
         });
 
         it('should summarize in HINDI transcript from file', async () => {
-            const sampleFileName = 'transcript_1730483421.txt';
+            const sampleFileName = 'sample_transcript_french.txt';
 
             await summarizeTranscript(sampleFileName, 'hindi');
             
