@@ -15,7 +15,7 @@ const COMMANDS_ENUM = Object.freeze({
 async function main() {
     await connectDB();
 
-    const [,, command, fileName, question] = process.argv;
+    const [,, command, language, fileName, question] = process.argv;
 
     if (!command || !Object.values(COMMANDS_ENUM).includes(command)) {
         console.log('Error: Unknown or missing command. Please use "generate", "summarize", or "answer".');
@@ -24,13 +24,13 @@ async function main() {
 
     switch(command) {
         case COMMANDS_ENUM.GENERATE:
-            await generateTranscript();
+            await generateTranscript(language);
             break;
         case COMMANDS_ENUM.SUMMARIZE:
-            await summarizeTranscript(fileName);
+            await summarizeTranscript(fileName, language);
             break;
         case COMMANDS_ENUM.ANSWER:
-            await answerQuestion(fileName, question);
+            await answerQuestion(fileName, question, language);
             break;
         default:
             console.log('Unknown command');

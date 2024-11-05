@@ -4,7 +4,8 @@ const transcriptSchema = new mongoose.Schema(
     {   
         fileName:  { type: String, index: true },
         content: String,
-        chatHistory: [{ question: String, answer: String }],
+        contentLanguage: { type: String, default: 'english'},
+        chatHistory: [{ question: String, answer: String, answerLanguage: { type: String, default: 'english'} }],
     }, 
     { 
         timestamps: true,

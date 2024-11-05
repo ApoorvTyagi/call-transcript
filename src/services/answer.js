@@ -2,7 +2,7 @@ const { readContentFromFile } = require('../util/fileUtils');
 const { answerTranscriptQuestion } = require('./openai');
 const { updateChatHistory } = require('../database/repository');
 
-async function answerQuestion(fileName, question) {
+async function answerQuestion(fileName, question, language) {
     try {
         const transcriptContent = readContentFromFile(fileName);
         if (!transcriptContent || typeof transcriptContent !== 'string') {
@@ -15,12 +15,12 @@ async function answerQuestion(fileName, question) {
             return null;
         }
     
-        const answer = await answerTranscriptQuestion(transcriptContent, question);
+        const answer = await answerTranscriptQuestion(transcriptContent, question, language);
         
-        console.log(`Answer: ${answer}`);
+        console.log(`Answer (in ${language}): ${answer}`);
     
         // Saving chat history
-        await updateChatHistory(fileName, {question, answer});
+        await updateChatHistory(fileName, {question, answer, answerLanguage: language});
     } catch (error) {
         console.error('Error answering transcript:', error);
     }
