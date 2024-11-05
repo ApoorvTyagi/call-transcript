@@ -131,14 +131,13 @@ This command runs the test cases specified in `tests/test.js` using Mocha.
     - **Business Logic**: Isolated core business logic within separate files in the `services` folder.
     - **Database Logic**: Consolidated database interaction functions in `/database/repository.js`.
     - **Environment Configuration**: Centralized environment variable management in `config.js`. This allows other services to import necessary environment variables directly from `config.js`, ensuring a cleaner setup and easier maintenance.
+    - **Modular File Operations** ([PR #11](https://github.com/ApoorvTyagi/call-transcript/pull/11)): Refactored the code to separate file operations into a dedicated utility module (`utils/fileUtils.js`), making file operations reusable across different services.
     
 - **Validation and Error Handling** ([PR #10](https://github.com/ApoorvTyagi/call-transcript/pull/10)): Added validation and error handling to improve robustness across modules:
     - **ENV Variable Validation**: Verified the database connection string & openai secret key before processing them. The application will exit with an error message if the any of them fail to exists, preventing further operations.
     - **Command Validation**: Added validation for supported commands to ensure the input command is valid. If an unsupported or missing command is provided, the application will log an error and terminate gracefully.
     - **Argument Checks**: Implemented checks to verify the presence of required arguments (*fileName* for `SUMMARIZE` and `ANSWER`, and *question* for `ANSWER`). If any argument is missing, an error message is shown, and the process exits without executing the command.
     - **File Existence Validation**: Validated the existence of files before attempting to read them, reducing the risk of unhandled errors from missing files in `summarizeTranscript` and `answerQuestion`.
-
-- **Modular File Operations** ([PR #11](https://github.com/ApoorvTyagi/call-transcript/pull/11)): Refactored the code to separate file operations into a dedicated utility module (`utils/fileUtils.js`), making file operations reusable across different services.
 
 - **Adding support for mutiple languages** ([PR #12](https://github.com/ApoorvTyagi/call-transcript/pull/12)): Integrated a new `language` parameter across commands (`generate`, `summarize`, or `answer`), enabling responses in the specified language.
     - **Service-Level Adjustments**: Updated the `transcript.js`, `analyze.js`, and `answer.js` service functions to utilize the language parameter. OpenAI prompts are dynamically constructed based on the language input to ensure responses in the requested language.
