@@ -1,0 +1,21 @@
+09:00 - Salesperson (S): Bonjour, je m'appelle Sophie et je suis votre conseillère en vente pour la société Tech Solutions. Comment puis-je vous aider aujourd'hui ?
+
+09:03 - Client (C): Bonjour Sophie, je suis intéressé par votre produit de sécurité informatique. Pouvez-vous m'en dire plus à ce sujet ?
+
+09:06 - S: Bien sûr ! Notre produit de sécurité informatique est conçu pour protéger vos données sensibles et prévenir les cyberattaques. Il offre une surveillance en temps réel et une protection avancée contre les logiciels malveillants.
+
+09:10 - C: Cela semble prometteur. Comment fonctionne l'installation du produit ?
+
+09:13 - S: L'installation est assez simple. Notre équipe technique peut vous guider à travers le processus étape par étape pour s'assurer que tout est configuré correctement. De plus, nous offrons une formation pour vous et votre personnel afin de maximiser l'utilisation du produit.
+
+09:18 - C: Parfait, et quel est le coût de votre solution de sécurité informatique ?
+
+09:21 - S: Nos prix varient en fonction de la taille de votre entreprise et de vos besoins spécifiques en matière de sécurité. Je peux vous envoyer une proposition personnalisée après avoir discuté de vos exigences plus en détail.
+
+09:25 - C: Très bien, je serais intéressé de recevoir cette proposition. Comment pouvons-nous procéder ?
+
+09:28 - S: Je vais avoir besoin de quelques informations de base sur votre entreprise et vos besoins en sécurité informatique. Une fois que j'aurai toutes les informations nécessaires, je vous enverrai la proposition par e-mail dans les plus brefs délais.
+
+09:32 - C: Parfait, je vous enverrai les détails par e-mail dès que possible. Merci pour votre temps et vos informations, Sophie.
+
+09:35 - S: De rien, c'était un plaisir de discuter avec vous. N'hésitez pas à me contacter si vous avez d'autres questions. Bonne journée !

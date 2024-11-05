@@ -1,7 +1,7 @@
 const { readContentFromFile } = require('../util/fileUtils');
 const { summarizeTranscriptContent } = require('./openai');
 
-async function summarizeTranscript(fileName) {
+async function summarizeTranscript(fileName, language) {
   try {
     const transcriptContent = readContentFromFile(fileName);
     if (!transcriptContent || typeof transcriptContent !== 'string') {
@@ -9,9 +9,9 @@ async function summarizeTranscript(fileName) {
       return null;
     }
 
-    const summary = await summarizeTranscriptContent(transcriptContent);
+    const summary = await summarizeTranscriptContent(transcriptContent, language);
 
-    console.log('Summary of the Transcript:', summary);
+    console.log(`Summary of the Transcript (in ${language}):`, summary);
   } catch (error) {
     console.error('Error summarizing transcript:', error);
   }

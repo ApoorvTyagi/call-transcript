@@ -18,23 +18,37 @@ let mongoServer;
 
 describe('Transcript Service Tests', function () {
     /* AI Generated */
-    this.timeout(10_000);
+    this.timeout(15_000);
+    let consoleSpy; 
 
     before(async () => {
         mongoServer = await MongoMemoryServer.create();
         const uri = mongoServer.getUri();
         await mongoose.connect(uri);
+        consoleSpy = sinon.spy(console, 'log'); // Spy on console.log to verify output
     });
 
     after(async () => {
         await mongoose.disconnect();
         await mongoServer.stop();
+        consoleSpy.restore();
     });
     /* AI Generated code ENDS */
 
     describe('Generate Transcript', () => {
         it('should generate a transcript and save it to the database', async () => {
-            const fileName = await generateTranscript();
+            const fileName = await generateTranscript('english');
+            expect(consoleSpy).to.have.been.calledWithMatch(`Transcript generated (in english):`);
+            expect(fileName).to.be.a('string');
+
+            const savedTranscript = await TranscriptModel.findOne({ fileName });
+            expect(savedTranscript).to.not.be.null;
+            expect(savedTranscript.content).to.be.a('string');
+        });
+
+        it('should generate a transcript in FRENCH and save it to the database', async () => {
+            const fileName = await generateTranscript('french');
+            expect(consoleSpy).to.have.been.calledWithMatch('Transcript generated (in french):');
             expect(fileName).to.be.a('string');
 
             const savedTranscript = await TranscriptModel.findOne({ fileName });
@@ -46,18 +60,19 @@ describe('Transcript Service Tests', function () {
     /* Below 2 test cases are AI generated */
     describe('Summarize Transcript', () => {
         it('should summarize transcript from file', async () => {
-            const sampleFileName = 'sample_transcript.txt';
-            const sampleContent = "00:00:00 Salesperson: Hello! Can I help you with our tech product?";
-            
-            require('fs').writeFileSync(sampleFileName, sampleContent);
+            const sampleFileName = 'sample_transcript_1730483421.txt';
 
-            // Spy on console.log to verify output
-            const consoleSpy = sinon.spy(console, 'log');
-            await summarizeTranscript(sampleFileName);
+            await summarizeTranscript(sampleFileName, 'english');
             
-            expect(consoleSpy).to.have.been.calledWithMatch('Summary of the Transcript:');
+            expect(consoleSpy).to.have.been.calledWithMatch('Summary of the Transcript (in english):');
+        });
 
-            consoleSpy.restore();
+        it('should summarize in HINDI transcript from file', async () => {
+            const sampleFileName = 'sample_transcript_french.txt';
+
+            await summarizeTranscript(sampleFileName, 'hindi');
+            
+            expect(consoleSpy).to.have.been.calledWithMatch('Summary of the Transcript (in hindi):');
         });
     });
 
@@ -67,18 +82,31 @@ describe('Transcript Service Tests', function () {
             
             const question = "What product was discussed?";
             
-            const consoleSpy = sinon.spy(console, 'log');
-            await answerQuestion(fileName, question);
+            await answerQuestion(fileName, question, 'english');
 
-            expect(consoleSpy).to.have.been.calledWithMatch("Answer:");
+            expect(consoleSpy).to.have.been.calledWithMatch("Answer (in english):");
 
             // Verify that chat history was updated
             const updatedTranscript = await TranscriptModel.findOne({ fileName });
             expect(updatedTranscript.chatHistory.length).to.be.greaterThan(0);
             expect(updatedTranscript.chatHistory[0].question).to.equal(question);
-
-            consoleSpy.restore();
         });
+
+        it('should answer a question int HINDI based on the transcript and update chat history', async () => {
+            const fileName = await generateTranscript('english');
+            
+            const question = "What product was discussed?";
+            
+            await answerQuestion(fileName, question, 'hindi');
+
+            expect(consoleSpy).to.have.been.calledWithMatch("Answer (in hindi):");
+
+            // Verify that chat history was updated
+            const updatedTranscript = await TranscriptModel.findOne({ fileName });
+            expect(updatedTranscript.chatHistory.length).to.be.greaterThan(0);
+            expect(updatedTranscript.chatHistory[0].question).to.equal(question);
+        });
+        
     });
     /* AI generated code ends */
 });

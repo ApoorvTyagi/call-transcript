@@ -1,7 +1,7 @@
 const TranscriptModel = require('../models/transcript');
 
-async function saveTranscript(fileName, content) {
-    const newTranscript = new TranscriptModel({ fileName, content });
+async function saveTranscript(fileName, content, language) {
+    const newTranscript = new TranscriptModel({ fileName, content, contentLanguage: language });
     await newTranscript.save();
     console.log('Transcript saved to database');
 }
